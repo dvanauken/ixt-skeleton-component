@@ -1,0 +1,34 @@
+<div class="container">
+    <!-- Control buttons -->
+    <div class="button-panel">
+      <button (click)="clearView()">Clear View</button>
+      <button (click)="drawOriginalPolygon()">Draw Polygon</button>
+      <button (click)="computeSkeleton()">Compute Skeleton</button>
+    </div>
+  
+    <!-- Split screen -->
+    <div class="split-screen">
+      <!-- Canvas panel -->
+      <div class="canvas-panel">
+        <canvas #canvas width="600" height="400"></canvas>
+      </div>
+  
+      <!-- Vertex input panel -->
+      <div class="vertex-panel">
+        <textarea
+          [(ngModel)]="vertexInput"
+          placeholder="Enter vertices as {(x,y),(x,y)...}"
+          rows="10"
+        ></textarea>
+      </div>
+    </div>
+  
+    <!-- Error panel -->
+    <div class="error-panel">
+      <div *ngIf="errors.length > 0" class="error-list">
+        <div *ngFor="let error of errors" class="error-item">
+          {{ error }}
+        </div>
+      </div>
+    </div>
+  </div>
