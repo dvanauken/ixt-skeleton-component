@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Skeleton } from 'src/lib/skeleton/Skeleton';
+import { Polygon } from 'src/lib/skeleton/Polygon';
+import { Edge } from 'src/lib/skeleton/Edge';
+import { Vector } from 'src/lib/skeleton/Vector';
 
 @Component({
   selector: 'ixt-skeleton',
@@ -179,7 +183,15 @@ export class IxtSkeletonComponent implements OnInit, AfterViewInit {
   }
 
   computeSkeleton() {
-    // TODO: Implement skeleton computation
-    this.errors.push('Skeleton computation not yet implemented');
+    try {
+      const vertices = this.parseVertices(this.vertexInput);
+      const polygon = new Polygon(vertices.map(([x, y]) => new Vector(x, y)));
+      const skeleton = Skeleton.build(polygon);
+      const edges = skeleton.getEdges();
+      console.log(`Number of edges: ${edges.length}`);
+      edges.forEach(edge => console.log(edge));
+    } catch (error: any) {
+      this.errors.push(error.message);
+    }
   }
 }
