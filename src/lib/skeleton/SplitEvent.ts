@@ -3,7 +3,7 @@ import { Polygon } from "./Polygon";
 import { Vector } from "./Vector";
 import { Vertex } from "./Vertex";
 import { Wavefront } from "./Wavefront";
-import { Event } from "./event";
+import { Event } from "./Event";
 
 export class SplitEvent extends Event {
     constructor(

@@ -50,29 +50,41 @@ export class Vector {
         return new Vector(this.x, this.y);
     }
 
-    static bisector(angle1: number, angle2: number): number {
-        const toRadians = Math.PI / 180;
-        const v1 = {
-            x: Math.cos(angle1 * toRadians),
-            y: Math.sin(angle1 * toRadians),
-        };
-        const v2 = {
-            x: Math.cos(angle2 * toRadians),
-            y: Math.sin(angle2 * toRadians),
-        };
-        const sumX = v1.x + v2.x;
-        const sumY = v1.y + v2.y;
-        const magnitude = Math.sqrt(sumX * sumX + sumY * sumY);
-        const bisectorVectorX = sumX / magnitude;
-        const bisectorVectorY = sumY / magnitude;
-        let bisectorAngleRadians = Math.atan2(bisectorVectorY, bisectorVectorX);
-        let bisectorAngleDegrees = bisectorAngleRadians * (180 / Math.PI);
+    // static bisector(angle1: number, angle2: number): number {
+    //     const toRadians = Math.PI / 180;
+    //     const v1 = {
+    //         x: Math.cos(angle1 * toRadians),
+    //         y: Math.sin(angle1 * toRadians),
+    //     };
+    //     const v2 = {
+    //         x: Math.cos(angle2 * toRadians),
+    //         y: Math.sin(angle2 * toRadians),
+    //     };
+    //     const sumX = v1.x + v2.x;
+    //     const sumY = v1.y + v2.y;
+    //     const magnitude = Math.sqrt(sumX * sumX + sumY * sumY);
+    //     const bisectorVectorX = sumX / magnitude;
+    //     const bisectorVectorY = sumY / magnitude;
+    //     let bisectorAngleRadians = Math.atan2(bisectorVectorY, bisectorVectorX);
+    //     let bisectorAngleDegrees = bisectorAngleRadians * (180 / Math.PI);
         
-        // Normalize angle to 0-360 degrees
-        if (bisectorAngleDegrees < 0) {
-            bisectorAngleDegrees += 360;
-        }
+    //     // Normalize angle to 0-360 degrees
+    //     if (bisectorAngleDegrees < 0) {
+    //         bisectorAngleDegrees += 360;
+    //     }
         
-        return bisectorAngleDegrees;
+    //     return bisectorAngleDegrees;
+    // }
+
+    static bisector(a: Vector, b: Vector): Vector {
+        // First normalize both vectors to ensure they have unit length
+        const v1 = a.normalize();
+        const v2 = b.normalize();
+        
+        // Add the normalized vectors
+        const sum = v1.plus(v2);
+        
+        // Normalize the result to get the bisector vector
+        return sum.normalize();
     }
 }
