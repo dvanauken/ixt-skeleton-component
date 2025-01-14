@@ -15,14 +15,19 @@ export class Angle {
         ));
     }
 
-    static fromRadians(rad: number): Angle {
-        // Normalize to [-π, π]
-        return new Angle(rad % (2 * Math.PI));
-    }
-
     static fromDegrees(deg: number): Angle {
         // Convert to radians and normalize
         return new Angle((deg * Math.PI / 180) % (2 * Math.PI));
+    }
+
+    static fromVector(v: Vector): Angle {
+        // Use atan2 for correct quadrant handling relative to x-axis
+        return new Angle(Math.atan2(v.y, v.x));
+    }
+
+    static fromRadians(rad: number): Angle {
+        // Normalize to [-π, π]
+        return new Angle(rad % (2 * Math.PI));
     }
 
     sin(): number {

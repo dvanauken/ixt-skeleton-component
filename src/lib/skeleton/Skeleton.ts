@@ -150,32 +150,66 @@ export class Skeleton {
         if (!vertex.prev || !vertex.next) {
             throw new Error("Vertex missing prev/next references");
         }
-
-        // Get vectors pointing AWAY from vertex
-        const prevVector = vertex.position.minus(vertex.prev.position);
-        const nextVector = vertex.next.position.minus(vertex.position);
-
-        this.log(`Previous edge vector: (${prevVector.x}, ${prevVector.y})`);
-        this.log(`Next edge vector: (${nextVector.x}, ${nextVector.y})`);
-
-        // Normalize vectors
+    
+        // Following the successful test pattern exactly:
+        // Vector TO current point (matches test's vectorFrom)
+        const vectorFrom = new Vector(
+            vertex.prev.position.x - vertex.position.x,
+            vertex.prev.position.y - vertex.position.y
+        );
+    
+        // Vector FROM current point (matches test's vectorTo)
+        const vectorTo = new Vector(
+            vertex.next.position.x - vertex.position.x,
+            vertex.next.position.y - vertex.position.y
+        );
+    
+        this.log(`Vector FROM prev->current: (${vectorFrom.x}, ${vectorFrom.y})`);
+        this.log(`Vector TO next: (${vectorTo.x}, ${vectorTo.y})`);
+    
         try {
-            const normalizedPrev = prevVector.normalize();
-            const normalizedNext = nextVector.normalize();
-            
-            this.log(`Normalized prev vector: (${normalizedPrev.x}, ${normalizedPrev.y})`);
-            this.log(`Normalized next vector: (${normalizedNext.x}, ${normalizedNext.y})`);
-
-            // Compute bisector
-            const bisector = normalizedPrev.plus(normalizedNext).normalize();
+            // Compute bisector using same method as test
+            const bisector = Vector.bisector(vectorFrom, vectorTo);
             this.log(`Computed bisector: (${bisector.x}, ${bisector.y})`);
-
+    
             return bisector;
-
         } catch (error) {
-            throw new Error(`Normalization failed: ${error}`);
+            throw new Error(`Bisector calculation failed: ${error}`);
         }
     }
+
+    // private calculateBisector(vertex: Vertex): Vector {
+    //     this.log(`Calculating bisector for vertex at (${vertex.position.x}, ${vertex.position.y})`);
+        
+    //     if (!vertex.prev || !vertex.next) {
+    //         throw new Error("Vertex missing prev/next references");
+    //     }
+
+    //     // Get vectors pointing AWAY from vertex
+    //     const prevVector = vertex.position.minus(vertex.prev.position);
+    //     const nextVector = vertex.next.position.minus(vertex.position);
+
+    //     this.log(`Previous edge vector: (${prevVector.x}, ${prevVector.y})`);
+    //     this.log(`Next edge vector: (${nextVector.x}, ${nextVector.y})`);
+
+    //     // Normalize vectors
+    //     try {
+    //         const normalizedPrev = prevVector.normalize();
+    //         const normalizedNext = nextVector.normalize();
+            
+    //         this.log(`Normalized prev vector: (${normalizedPrev.x}, ${normalizedPrev.y})`);
+    //         this.log(`Normalized next vector: (${normalizedNext.x}, ${normalizedNext.y})`);
+
+    //         // Compute bisector
+    //         const bisector = normalizedPrev.plus(normalizedNext).normalize();
+    //         this.log(`Computed bisector: (${bisector.x}, ${bisector.y})`);
+
+    //         return bisector;
+
+    //     } catch (error) {
+    //         throw new Error(`Normalization failed: ${error}`);
+    //     }
+    // }
 
     private computeInitialEdgeEvents(polygon: Polygon): void {
         this.log("Starting edge event computation");
